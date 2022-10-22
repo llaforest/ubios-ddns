@@ -53,36 +53,25 @@ Confirmed to work on UniFi OS Version 1.11.4 and Network Version 7.0.23
 * `ssh` into your UDMP
 * Download the archive to your home directory
 * Unzip it
+* [Make your adjustments](#make-your-adjustments) to `ubios-ddns.env`
+* Deploy the package (Will adjust if udmp or udmse)
 
 ````sh
 cd
-# curl -JLO https://github.com/llaforest/ubios-ddns/archive/refs/heads/main.zip
-#   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-#                                  Dload  Upload   Total   Spent    Left  Speed
-# 100   121    0   121    0     0    489      0 --:--:-- --:--:-- --:--:--   489
-# 100  5877    0  5877    0     0  12167      0 --:--:-- --:--:-- --:--:-- 12167
-# curl: Saved to filename 'ubios-ddns-main.zip'
+curl -JLO https://github.com/llaforest/ubios-ddns/archive/refs/heads/main.zip
 unzip ubios-ddns-main.zip
-# Archive:  ubios-ddns-main.zip
-# creating: ubios-ddns-main/
-# inflating: ubios-ddns-main/README.md
-# creating: ubios-ddns-main/ubios-ddns/
-# creating: ubios-ddns-main/ubios-ddns/on_boot.d/
-# inflating: ubios-ddns-main/ubios-ddns/on_boot.d/98-ubios-ddns.sh
-# inflating: ubios-ddns-main/ubios-ddns/ubios-ddns.env
-# inflating: ubios-ddns-main/ubios-ddns/ubios-ddns.sh 
+cd ubios-ddns-main
+vi ubios-ddns/ubios-ddns.env
+chmod 0755 deploy.sh
+. deploy.sh
 ````
 
-* [Make your adjustments](#make-your-adjustments) to `ubios-ddns.env`
-* Move (or copy) the files to their proper place
-* Enter the directory /mnt/data/ubios-ddns
+* You should be in the proper directory
+* Verify one last time the content of .env file
 * Run the script for the first time
 
 ````sh
-mv ubios-ddns-main/ubios-ddns /mnt/data/
-rm -irf ubios-ddns-main*
-cd /mnt/data/ubios-ddns/
-chmod 0755 ubios-ddns.sh on_boot.d/98-ubios-ddns.sh
+./ubios-ddns.sh
 ````
 
 ### Make your adjustments
@@ -90,10 +79,6 @@ chmod 0755 ubios-ddns.sh on_boot.d/98-ubios-ddns.sh
 Adjust file `ubios-ddns.env` to your liking. You typically only need to touch environment variables `DOMAIN`, `NAME`, `KEY` and `SECRET`.
 
 ## First Run
-
-````sh
-/mnt/data/ubios-ddns/ubios-ddns.sh
-````
 
 Calling the script for the first time will
 
@@ -106,6 +91,7 @@ Here the script in `on_boot.d` will trigger execution of `sh /mnt/data/ubios-ddn
 
 ## De-installation and de-registration
 
+* If running on UDMSE or UDR, replace `/mnt/data` by `/data`
 * Remove the cron file from `/etc/cron.d´
 * Remove the boot trigger from `/mnt/data/on_boot.d/´
 
