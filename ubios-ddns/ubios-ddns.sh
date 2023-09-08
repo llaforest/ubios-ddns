@@ -17,7 +17,7 @@ fi
 # Setup cron job to run every minute
 CRON_FILE='/etc/cron.d/ubios-ddns'
 if [ ! -f "${CRON_FILE}" ]; then
-	echo "* * * * * sh ${UBIOS_DDNS_ROOT}/ubios-ddns.sh > ${UBIOS_DDNS_ROOT}/ubios-ddns.log 2>&1" >${CRON_FILE}
+	echo "* * * * * root ${UBIOS_DDNS_ROOT}/ubios-ddns.sh > ${UBIOS_DDNS_ROOT}/ubios-ddns.log 2>&1" >${CRON_FILE}
 	chmod 644 ${CRON_FILE}
 	/etc/init.d/crond reload ${CRON_FILE}
 	echo "Restored cron file"

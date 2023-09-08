@@ -54,7 +54,6 @@ Confirmed to work on UniFi OS Version 1.11.4 and Network Version 7.0.23
 * Download the archive to your home directory
 * Unzip it
 * [Make your adjustments](#make-your-adjustments) to `ubios-ddns.env`
-* Deploy the package (Will adjust if udmp or udmse)
 
 ````sh
 cd
@@ -62,11 +61,17 @@ curl -JLO https://github.com/llaforest/ubios-ddns/archive/refs/heads/main.zip
 unzip ubios-ddns-main.zip
 cd ubios-ddns-main
 vi ubios-ddns/ubios-ddns.env
-chmod 0755 deploy.sh
-. deploy.sh
 ````
 
-* You should be in the proper directory
+* Save the file when domain, key and secret set correctly
+* Deploy the package (Will adjust if udmp or udmse)
+
+````sh
+chmod 0755 deploy.sh
+./deploy.sh
+````
+
+* You should change to the proper directory
 * Verify one last time the content of .env file
 * Run the script for the first time
 
