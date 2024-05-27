@@ -4,28 +4,16 @@
 
 ## What it does
 
-Spare you from manually updating 'A' records in your DNS provider when your external IP changes on your UDM.
+Spare you from manually updating 'A' records in your cloudfalre DNS provider when your external IP changes on your UDM.
 
 This set of scripts is installed on devices with UbiOS, like the UniFi Dream Machine Pro (UDMP), and will
 
-* check external IP address and compare it with the DNS 'A' record specified using DNS Provider API
+* check external IP address and compare it with the DNS 'A' record specified using cloudflare DNS Provider API
 * update the DNS 'A' record in case it is different than the external IP assigned by your ISP (Internet Service Provider)
+* Thanks to https://github.com/fire1ce/DDNS-Cloudflare-Bash for Cloudflare logic
 * survive device reboots and firmware upgrades thanks to [boostchicken's udm-utilities](https://github.com/boostchicken/udm-utilities) using its `on_boot.d` extension.
 
 This is valid as long as Ubiquiti does not change something in their config. Use at your own risk, you have been warned.
-
-## Currently supported DNS API providers
-
-Adjusting two variables in `ubios-ddns.env` should allow access to many of more than 120 providers from [acme.sh DNS API](https://github.com/acmesh-official/acme.sh/wiki/dnsapi). Adjust
-
-`````sh
-API_URL="..."
-KEY="..."
-SECRET="..."
-SSO="..."
-`````
-
-to your liking and feel free to add to this repo. Some APIs may require additional manual preparation.
 
 ## But why?
 
@@ -51,27 +39,23 @@ Confirmed to work on UniFi OS Version 1.11.4 and Network Version 7.0.23
 ### Download the package
 
 * `ssh` into your UDMP
-* Download the archive to your home directory
-* Unzip it
+* Move to /data/ directory
+* Clone the git project
 * [Make your adjustments](#make-your-adjustments) to `ubios-ddns.env`
 
 ````sh
-cd
-curl -JLO https://github.com/llaforest/ubios-ddns/archive/refs/heads/main.zip
-unzip ubios-ddns-main.zip
-cd ubios-ddns-main
-vi ubios-ddns/ubios-ddns.env
+# If git not present
+apt-get install git
+
+cd /data
+git clone https://github.com/llaforest/ubios-ddns.git
+cd ubios-ddns
+chmod +x ubios-ddns.sh
+
+# Edit the env file to set variables
+vi ubios-ddns.env
 ````
 
-* Save the file when domain, key and secret set correctly
-* Deploy the package (Will adjust if udmp or udmse)
-
-````sh
-chmod 0755 deploy.sh
-./deploy.sh
-````
-
-* You should change to the proper directory
 * Verify one last time the content of .env file
 * Run the script for the first time
 
