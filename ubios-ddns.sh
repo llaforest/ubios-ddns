@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 ###  Create .ubios-ddns.log file of the last run for debug
-parent_path="$(dirname "${BASH_SOURCE[0]}")"
+script_dir="$(dirname "${BASH_SOURCE[0]}")" 
+parent_path="$(cd "$script_dir" && pwd)"
 FILE=${parent_path}/ubios-ddns.log
 if ! [ -x "$FILE" ]; then
   touch "$FILE"
@@ -54,7 +55,7 @@ fi
 REIP='^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])$'
 
 ### Setup persistent on_boot.d trigger so the script run at boot
-on_boot_dir='/mnt/data/on_boot.d'
+on_boot_dir='/data/on_boot.d'
 on_boot_file='98-ubios-ddns.sh'
 if [ -d "${on_boot_dir}" ] && [ ! -f "${on_boot_dir}/${on_boot_file}" ]; then
   cp "${parent_path}/on_boot.d/${on_boot_file}" "${on_boot_dir}/${on_boot_file}"
@@ -67,7 +68,6 @@ cron_file='/etc/cron.d/ubios-ddns'
 if [ ! -f "${cron_file}" ]; then
   echo "*/5 * * * * root ${parent_path}/ubios-ddns.sh" > ${cron_file}
   chmod 644 ${cron_file}
-  /etc/init.d/crond reload ${cron_file}
   echo "Restored cron file"
 fi
 
